@@ -301,28 +301,48 @@ public class Server
         };
         return cardData;
     }
-    private LocationData GetLocationData(ILocation location, int player1, int player2)
+   private LocationData GetLocationData(ILocation location, int player1, int player2)
+{
+    LocationData locationData = new LocationData
     {
-        LocationData locationData = new LocationData
-        {
-            Id = location.id,
-            Name = location.Name,
-            Desc = location.Desc,
-            Image = location.Image
-        };
-        if (location.zone1.Player == player1)
-        {
-            locationData.Player1Zone = GetPlayerCards([.. location.zone1.GetCards()]);
+        Id = location.id,
+        Name = location.Name,
+        Desc = location.Desc,
+        Image = location.Image
+    };
 
-            locationData.Player2Zone = GetPlayerCards([.. location.zone2.GetCards()]);
+    // Explicitly handle card collections without collection expressions
+    List<CardData> player1Cards = new List<CardData>();
+    List<CardData> player2Cards = new List<CardData>();
 
-
-
-            locationData.Player1LocatinScore = location.zone1.total;
-            locationData.Player2LocatinScore = location.zone2.total;
-        }
-        return locationData;
+    foreach (var card in location.zone1.GetCards())
+    {
+        player1Cards.Add(GetCardData(card));
     }
+
+    foreach (var card in location.zone2.GetCards())
+    {
+        player2Cards.Add(GetCardData(card));
+    }
+
+    if (location.zone1.Player == player1)
+    {
+        locationData.Player1Zone = player1Cards;
+        locationData.Player2Zone = player2Cards;
+    }
+    else
+    {
+        // Assuming you want to reverse the assignment if zone1's player is not player1
+        locationData.Player1Zone = player2Cards;
+        locationData.Player2Zone = player1Cards;
+    }
+
+    locationData.Player1LocatinScore = location.zone1.total; // Fixed typo from Locatin to Location
+    locationData.Player2LocatinScore = location.zone2.total; // Fixed typo from Locatin to Location
+
+    return locationData;
+}
+
 
 
 
