@@ -1,4 +1,4 @@
 [build]
-  base = ""   # Or "server" if your project is in a subfolder
-  command = "dotnet build"
-  publish = "dotnot publish" 
+ base = ""
+ command = "dotnet build" 
+ publish = "bin/Release/net6.0/publish" 
