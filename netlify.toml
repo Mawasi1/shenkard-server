@@ -1,2 +1,4 @@
-[build.environment]
- DOTNET_VERSION = "8.0.x" 
+[build]
+  base = ""   # Or "server" if your project is in a subfolder
+  command = "dotnet build"
+  publish = "dotnot publish" 
